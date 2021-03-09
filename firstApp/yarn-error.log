@@ -1,0 +1,57 @@
+Arguments: 
+  /snap/node/3292/bin/node /snap/node/3292/bin/yarn.js global dir
+
+PATH: 
+  /home/almog/Desktop/react-native/rn-first-app/node_modules/.bin:/home/almog/Desktop/react-native/node_modules/.bin:/home/almog/Desktop/node_modules/.bin:/home/almog/node_modules/.bin:/home/node_modules/.bin:/node_modules/.bin:/home/almog/.npm-global/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/home/almog/.npm-global/bin:/home/almog/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  12.19.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: EACCES: permission denied, write
+      at writeSync (fs.js:679:3)
+      at SyncWriteStream._write (internal/fs/sync_write_stream.js:24:3)
+      at doWrite (_stream_writable.js:403:12)
+      at writeOrBuffer (_stream_writable.js:387:5)
+      at SyncWriteStream.Writable.write (_stream_writable.js:318:11)
+      at ConsoleReporter._log (/snap/node/3292/lib/cli.js:96770:17)
+      at ConsoleReporter.log (/snap/node/3292/lib/cli.js:96758:10)
+      at dir (/snap/node/3292/lib/cli.js:36256:14)
+      at Object.<anonymous> (/snap/node/3292/lib/cli.js:25940:25)
+      at Generator.next (<anonymous>)
+
+npm manifest: 
+  {
+    "main": "node_modules/expo/AppEntry.js",
+    "scripts": {
+      "start": "expo start",
+      "android": "expo start --android",
+      "ios": "expo start --ios",
+      "web": "expo start --web",
+      "eject": "expo eject"
+    },
+    "dependencies": {
+      "expo": "~40.0.0",
+      "expo-status-bar": "~1.0.3",
+      "react": "16.13.1",
+      "react-dom": "16.13.1",
+      "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+      "react-native-web": "~0.13.12"
+    },
+    "devDependencies": {
+      "@babel/core": "~7.9.0"
+    },
+    "private": true
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
