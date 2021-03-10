@@ -14,35 +14,38 @@ const generateRandomBetween = (min, max, exclude) => {
   }
 };
 
-const GameScreen = (props) => {
+const GameScreen = ({userChoice, onGameOver}) => {
   const [currentGuess, setCurrentGuess] = useState(
-    generateRandomBetween(1, 100, props.userChoice)
+    generateRandomBetween(1, 100, userChoice)
   );
+  const [rounds, setRounds] = useState(0)
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
 
 
   useEffect(() => {
-    if (currentGuess === props.userChoice){
-        
+    if (currentGuess === userChoice){
+        onGameOver(rounds);
     }
-  }, [])
+  }, [currentGuess, userChoice, onGameOver])
   const nextGuessHandler = (direction) => {
     if (
-      (direction === "LOWER" && currentGuess < props.userChoice) ||
-      (direction === "GREATER" && currentGuess > props.userChoice)
+      (direction === "LOWER" && currentGuess < userChoice) ||
+      (direction === "GREATER" && currentGuess > userChoice)
     ) {
       Alert.alert("Don't lie!", "You know that this is wrong", [
         { text: "sorry!", style: "cancel" },
       ]);
+      return
     }
     if (direction === "LOWER") {
       currentHigh.current = currentGuess;
-    } else if (direction === "GREATER") {
+    } else {
       currentLow.current = currentGuess;
     }
-    const nextNumber = generateRandomBetween(currentLow, currentHigh, currentGuess)
+    const nextNumber = generateRandomBetween(currentLow.current, currentHigh.current, currentGuess)
     setCurrentGuess(nextNumber)
+    setRounds(currentRounds => currentRounds + 1)
   };
   return (
     <View style={styles.screen}>
