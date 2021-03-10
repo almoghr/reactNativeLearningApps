@@ -6,19 +6,25 @@ import GameScreen from "./screens/GameScreen";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState();
+  const [guessRounds, setGuessRounds] = useState(0);
 
   const startGameHandler = (selectedNumber) => {
     setUserNumber(selectedNumber);
   };
 
-  let content = <StartGameScreen />;
+  const gameOverHandler = (numOfRounds) => {
+    setGuessRounds(numOfRounds);
+  };
+
   return (
     <View style={styles.screen}>
       <Header title="Guess A Number App" />
       {!userNumber ? (
         <StartGameScreen onStartGame={startGameHandler} />
+      ) : !guessRounds ? (
+        <GameScreen userChoice={userNumber} onGameOver={gameOverHandler} />
       ) : (
-        <GameScreen userChoice={userNumber} />
+        <GameOverScreen />
       )}
     </View>
   );
