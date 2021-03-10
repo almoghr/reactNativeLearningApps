@@ -18,7 +18,7 @@ export default function App() {
       {!userNumber ? (
         <StartGameScreen onStartGame={startGameHandler} />
       ) : (
-        <GameScreen />
+        <GameScreen userChoice={userNumber} />
       )}
     </View>
   );
