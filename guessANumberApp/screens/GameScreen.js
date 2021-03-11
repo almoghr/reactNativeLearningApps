@@ -80,7 +80,8 @@ const GameScreen = ({ userChoice, onGameOver }) => {
     </View>
   );
 
-  if (availableDeviceHeight) {
+  if (availableDeviceHeight
+    ) {
     return (
       <View style={styles.screen}>
         <Text>Opponent's Guess</Text>{" "}

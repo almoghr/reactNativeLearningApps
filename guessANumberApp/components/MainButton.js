@@ -1,28 +1,45 @@
-import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import Colors from '../constants/colors'
-const MainButton = props => {
-    return (
-        <TouchableOpacity onPress={props.onPress}>
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  Platform,
+} from "react-native";
+import Colors from "../constants/colors";
+const MainButton = (props) => {
+  let ButtonComponent =
+    Platform.OS === "ios" && Platform.version >= 21
+      ? TouchableOpacity
+      : TouchableNativeFeedback;
+
+  return (
+    <View style={styles.buttonContainer}>
+      <ButtonComponent onPress={props.onPress}>
         <View style={styles.button}>
-            <Text style={styles.buttonText}>{props.children}</Text>
+          <Text style={styles.buttonText}>{props.children}</Text>
         </View>
-        </TouchableOpacity>
-    )
-}
+      </ButtonComponent>
+    </View>
+  );
+};
 const styles = StyleSheet.create({
-    button:{
-        backgroundColor: Colors.primary,
-        paddingVertical: 12,
-        paddingHorizontal: 30,
-        borderRadius: 25
+    buttonContainer: {
+        borderRadius: 25,
+        overflow: hidden
     },
-    buttonText:{
-        color: 'white',
-        fontFamily: 'open-sans',
-        fontSize: 18,
-    },
-})
+  button: {
+    backgroundColor: Colors.primary,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 25,
+  },
+  buttonText: {
+    color: "white",
+    fontFamily: "open-sans",
+    fontSize: 18,
+  },
+});
 
-export default MainButton
-
+export default MainButton;

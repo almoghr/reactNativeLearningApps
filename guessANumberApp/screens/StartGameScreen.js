@@ -21,7 +21,7 @@ const StartGameScreen = ({ onStartGame }) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState("");
-  const [buttongWidth, setButtonWidth] = useState(
+  const [buttonWidth, setButtonWidth] = useState(
     Dimensions.get("window").width / 4
   );
 
