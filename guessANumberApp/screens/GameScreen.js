@@ -1,7 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
-import { StyleSheet, Text, View, Button, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Alert,
+  ScrollView,
+} from "react-native";
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
+import MainButton from "../components/MainButton";
+import { Ionicons } from "@expo/vector-icons";
 
 const generateRandomBetween = (min, max, exclude) => {
   min = Math.ceil(min);
@@ -14,20 +23,19 @@ const generateRandomBetween = (min, max, exclude) => {
   }
 };
 
-const GameScreen = ({userChoice, onGameOver}) => {
+const GameScreen = ({ userChoice, onGameOver }) => {
   const [currentGuess, setCurrentGuess] = useState(
     generateRandomBetween(1, 100, userChoice)
   );
-  const [rounds, setRounds] = useState(0)
+  const [pastGuesses, setPastGuesses] = useState([]);
   const currentLow = useRef(1);
   const currentHigh = useRef(100);
 
-
   useEffect(() => {
-    if (currentGuess === userChoice){
-        onGameOver(rounds);
+    if (currentGuess === userChoice) {
+      onGameOver(pastGuesses.length);
     }
-  }, [currentGuess, userChoice, onGameOver])
+  }, [currentGuess, userChoice, onGameOver]);
   const nextGuessHandler = (direction) => {
     if (
       (direction === "LOWER" && currentGuess < userChoice) ||
@@ -36,25 +44,45 @@ const GameScreen = ({userChoice, onGameOver}) => {
       Alert.alert("Don't lie!", "You know that this is wrong", [
         { text: "sorry!", style: "cancel" },
       ]);
-      return
+      return;
     }
     if (direction === "LOWER") {
       currentHigh.current = currentGuess;
     } else {
-      currentLow.current = currentGuess;
+      currentLow.current = currentGuess + 1;
     }
-    const nextNumber = generateRandomBetween(currentLow.current, currentHigh.current, currentGuess)
-    setCurrentGuess(nextNumber)
-    setRounds(currentRounds => currentRounds + 1)
+    const nextNumber = generateRandomBetween(
+      currentLow.current,
+      currentHigh.current,
+      currentGuess
+    );
+    setCurrentGuess(nextNumber);
+    // setRounds((currentRounds) => currentRounds + 1);
+    setPastGuesses((currentPastGuesses) => [nextNumber, ...currentPastGuesses]);
   };
+  const renderListItems = (value, numOfRounds) => (
+    <View key={value} style={styles.listItem}>
+      <Text style={styles.text}>#{numOfRounds}</Text>
+      <Text style={styles.text}>{value}</Text>
+    </View>
+  );
   return (
     <View style={styles.screen}>
       <Text>Opponent's Guess</Text>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card style={styles.buttonContainer}>
-        <Button title="LOWER" onPress={() => nextGuessHandler("LOWER")} />
-        <Button title="GREATER" onPress={() => nextGuessHandler("GREATER")} />
+        <MainButton onPress={() => nextGuessHandler("LOWER")}>
+          <Ionicons name="md-remove" size={24} color="white" />
+        </MainButton>
+        <MainButton onPress={() => nextGuessHandler("GREATER")}>
+          <Ionicons name="md-add" size={24} color="white" />
+        </MainButton>
       </Card>
+      <View style={styles.listContainer}>
+      <ScrollView contentContainerStyle={styles.list}>
+        {pastGuesses.map((guess, index) => renderListItems(guess, pastGuesses.length - index))}
+      </ScrollView>
+      </View>
     </View>
   );
 };
@@ -67,11 +95,34 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     marginTop: 20,
-    width: 300,
-    maxWidth: "80%",
+    width: 350,
+    maxWidth: "90%",
   },
+  text: {
+    fontSize: 18,
+    fontFamily: "open-sans"
+  },
+  listItem:{
+    borderColor:'#ccc',
+    borderWidth:1,
+    padding: 15,
+    margin: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: '80%',
+ },
+ listContainer:{
+   flex: 1,
+   width: '80%',
+   textAlign: "center",
+ },
+ list:{
+   flexGrow: 1,
+   alignItems: "center",
+   justifyContent: "flex-end",
+ }
 });
 
 export default GameScreen;
