@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -21,6 +21,10 @@ const StartGameScreen = ({ onStartGame }) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState("");
+  const [buttongWidth, setButtonWidth] = useState(
+    Dimensions.get("window").width / 4
+  );
+
 
   const numberInputHandler = (inputText) => {
     setEnteredValue(inputText.replace(/[^0-9]/g), "");
@@ -62,9 +66,19 @@ const StartGameScreen = ({ onStartGame }) => {
       </Card>
     );
   }
+
+  useEffect(() => {
+    const updateLayout = () => {
+      setButtonWidth(Dimensions.get("window").width / 4);
+    };
+    Dimensions.addEventListener("change", updateLayout);
+    return () => {
+      Dimensions.removeEventListener("change", updateLayout);
+    }
+  }, [])
   return (
     <ScrollView>
-      <KeyboardAvoidingView behavior='position' keyboardVerticalOffset={30}>
+      <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={30}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.screen}>
             <Text style={styles.title}>Start a New Game!</Text>
@@ -81,14 +95,14 @@ const StartGameScreen = ({ onStartGame }) => {
                 value={enteredValue}
               />
               <View style={styles.buttonContainer}>
-                <View style={styles.button}>
+                <View style={{width: buttonWidth}}>
                   <Button
                     title="reset"
                     color={Colors.secondary}
                     onPress={resetInputHandler}
                   />
                 </View>
-                <View style={styles.button}>
+                <View style={{width: buttonWidth}}>
                   <Button
                     title="confirm"
                     color={Colors.primary}
@@ -128,9 +142,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 15,
   },
-  button: {
-    width: Dimensions.get("window").width / 4,
-  },
+  // button: {
+  //   width: Dimensions.get("window").width / 4,
+  // },
   input: {
     width: 50,
     textAlign: "center",
