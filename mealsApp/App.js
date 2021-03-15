@@ -4,7 +4,9 @@ import { StyleSheet, Text, View } from "react-native";
 import MealsNavigator from './navigation/MealsNavigator'
 import AppLoading from 'expo-app-loading';
 import { useFonts } from "expo-font";
+import { enableScreens } from 'react-native-screens'
 
+enableScreens()
 
 export default function App() {
 
