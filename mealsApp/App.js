@@ -1,6 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StyleSheet } from "react-native";
+import store from './store/store'
+import { Provider } from 'react-redux'
 import MealsNavigator from './navigation/MealsNavigator'
 import AppLoading from 'expo-app-loading';
 import { useFonts } from "expo-font";
@@ -20,7 +22,7 @@ export default function App() {
 
   
   return (
-    <MealsNavigator />
+    <Provider store={store}><MealsNavigator /></Provider>
   );
 }
 
