@@ -1,12 +1,8 @@
 import React, { useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  FlatList,
-  Button,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, FlatList } from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import CustomHeaderButton from "../Components/CustomHeaderButton";
+
 import { CATEGORIES } from "../data/dummy-data";
 import Colors from "../constants/color";
 import CategoryGridTile from "../Components/CategoryGridTile";
@@ -33,9 +29,22 @@ const CategoriesScreen = (props) => {
   );
 };
 
-CategoriesScreen.navigationOptions = () => {
+CategoriesScreen.navigationOptions = (navData) => {
   return {
     headerTitle: "Meal Categories",
+    headerLeft: () => {
+      return (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Menu"
+            iconName="ios-menu"
+            onPress={() => {
+              navData.navigation.toggleDrawer();
+            }}
+          />
+        </HeaderButtons>
+      );
+    },
   };
 };
 
