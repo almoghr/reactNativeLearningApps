@@ -58,7 +58,7 @@ const tabScreenConfig = {
     screen: MealsNavigator,
     navigationOptions: {
       tabBarColor: Colors.primary,
-      tabBarLabel: Plarform.OS === 'android' ? <Text style={{fontFamily: 'open-sans-bold'}}>Meals</Text> : 'meals',
+      tabBarLabel: Platform.OS === 'android' ? <Text style={{fontFamily: 'open-sans-bold'}}>Meals</Text> : 'meals',
       tabBarIcon: (tabInfo) => {
         return (
           <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />
@@ -70,7 +70,7 @@ const tabScreenConfig = {
     screen: FavoriteNavigator,
     navigationOptions: {
       tabBarColor: Colors.secondary,
-      tabBarLabel: Plarform.OS === 'android' ? <Text style={{fontFamily: 'open-sans-bold'}}>Favorites</Text> : 'Favorites',
+      tabBarLabel: Platform.OS === 'android' ? <Text style={{fontFamily: 'open-sans-bold'}}>Favorites</Text> : 'Favorites',
       tabBarIcon: (tabInfo) => {
         return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
       },
@@ -102,7 +102,7 @@ const FiltersNavigator = createStackNavigator(
 
 const mainNavigator = createDrawerNavigator(
   {
-    MealsFavs: {
+    Meals: {
       screen: MealsFavTabNavigator,
       navigtionOptions: {
         drawerLabels: "Meals",
