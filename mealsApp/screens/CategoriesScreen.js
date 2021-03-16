@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, FlatList } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../Components/CustomHeaderButton";
-
 import { CATEGORIES } from "../data/dummy-data";
-import Colors from "../constants/color";
 import CategoryGridTile from "../Components/CategoryGridTile";
 const CategoriesScreen = (props) => {
   renderGridItem = (itemData) => {
