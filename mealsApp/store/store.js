@@ -1,11 +1,13 @@
-import { createStore, combineReducers } from 'redux'
-import mealsReducer from './reducers/meals'
-
-
+import { createStore, applyMiddle, combineReducers } from "redux";
+import mealsReducer from "./reducers/meals";
+import { composeWithDevTools } from 'redux-devtools-extension'
 const rootReducer = combineReducers({
-    meals: mealsReducer
-})
+  meals: mealsReducer,
+});
 
-const store = createStore(rootReducer)
+const store = createStore(
+  rootReducer,
+  composeWithDevTools()
+);
 
-export default store
+export default store;

@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Switch, Platform } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../Components/CustomHeaderButton";
 import Colors from "../constants/color";
+import { useDispatch } from "react-redux";
+import {setFilters} from '../store/actions/meals'
 
 const FilterSwitch = (props) => {
   return (
@@ -19,6 +21,7 @@ const FilterSwitch = (props) => {
 };
 
 const FiltersScreen = (props) => {
+    const dispatch = useDispatch()
   const { navigation } = props;
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [isVegan, setIsVegan] = useState(false);
@@ -27,17 +30,18 @@ const FiltersScreen = (props) => {
 
   const saveFilters = useCallback(() => {
     const appliedFilters = {
-      GlutenFree: isGlutenFree,
-      LactoseFree: isLactoseFree,
-      Vengan: isVegan,
+      glutenFree: isGlutenFree,
+      lactoseFree: isLactoseFree,
+      vegan: isVegan,
       vegeterian: isVegeterian,
     };
-    console.log(appliedFilters);
-  }, [isGlutenFree, isLactoseFree, isVegan, isVegeterian]);
+    dispatch(setFilters(appliedFilters));
+  }, [isGlutenFree, isLactoseFree, isVegan, isVegeterian, dispatch]);
 
   useEffect(() => {
     navigation.setParams({ save: saveFilters });
   }, [saveFilters]);
+  
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>Available Filters / Restrictions</Text>
