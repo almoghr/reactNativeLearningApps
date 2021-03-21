@@ -1,7 +1,7 @@
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from 'react-navigation-stack'
 
-// import CartScreen from '../screens/shop/CartScreen'
+import CartScreen from '../screens/shop/CartScreen'
 // import OrdersScreen from '../screens/shop/OrdersScreen'
 import ProductDetailsScreen from '../screens/shop/ProductDetailsScreen'
 import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen'
@@ -15,6 +15,9 @@ const ProductsNavigator = createStackNavigator({
     ProductDetail:{
        screen: ProductDetailsScreen,
     },
+    Cart:{
+        screen: CartScreen,
+    }
 }, {
     defaultNavigationOptions: {
         headerStyle: { 

@@ -41,9 +41,9 @@ ProductsOverviewScreen.navigationOptions = (navData) => {
           <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
             <Item
               title="Cart"
-              iconName="ios-cart"
+              iconName={Platform.OS === 'android' ? "md-cart" : "ios-cart"}
               onPress={() => {  
-                // navData.navigation.navigate({routeName: });
+                navData.navigation.navigate({routeName: 'Cart'});
               }}
             />
           </HeaderButtons>
