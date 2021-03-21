@@ -10,6 +10,11 @@ import {
   TouchableNativeFeedback,
 } from "react-native";
 import Colors from "../../constants/colors";
+
+
+
+
+
 const ProductItem = (props) => {
   let TouchableCmp =
     Platform.OS === "android" && Platform.version >= 21
