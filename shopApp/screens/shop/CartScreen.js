@@ -21,7 +21,6 @@ const CartScreen = (props) => {
         quantity: state.cart.items[key].quantity,
         summary: state.cart.items[key].sum,
       });
-      console.log(transformedCartItems);
     }
     return transformedCartItems.sort((a, b) =>
       a.productId > b.productId ? 1 : -1
@@ -54,6 +53,7 @@ const CartScreen = (props) => {
             title={itemData.item.productTitle}
             amount={itemData.item.summary}
             quantity={itemData.item.quantity}
+            deleteable
             onRemove={() => {
               dispatch(removeFromCart(itemData.item.productId));
             }}
