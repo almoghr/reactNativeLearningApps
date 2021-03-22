@@ -5,7 +5,7 @@ import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
 import OrderItem from "../../components/shop/OrderItem";
 
-const OrdersScreen = (props) => {
+const OrdersScreen = () => {
   const orders = useSelector((state) => state.orders.orders);
   return (
     <FlatList

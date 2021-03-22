@@ -1,14 +1,25 @@
 import React from "react";
-import { StyleSheet, FlatList, Platform } from "react-native";
+import { StyleSheet, FlatList, Platform, Button } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import ProductItem from "../../components/shop/ProductItem";
-import { addToCart } from '../../store/products/actions/cart'
+import { addToCart } from "../../store/products/actions/cart";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
+import Colors from "../../constants/colors";
 
 const ProductsOverviewScreen = (props) => {
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const products = useSelector((state) => state.products.availableProducts);
+  const selectItemHandler = (id, title) => {
+    props.navigation.navigate({
+      routeName: "ProductDetail",
+      params: {
+        productId: id,
+        productTitle: title,
+      },
+    });
+  };
+
   return (
     <FlatList
       data={products}
@@ -17,17 +28,25 @@ const ProductsOverviewScreen = (props) => {
           title={itemData.item.title}
           price={itemData.item.price}
           imageUrl={itemData.item.imageUrl}
-          onViewDetail={() =>
-            props.navigation.navigate({
-              routeName: "ProductDetail",
-              params: {
-                productId: itemData.item.id,
-                productTitle: itemData.item.title,
-              },
-            })
+          onSelect={() =>
+            selectItemHandler(itemData.item.id, itemData.item.title)
           }
-          onAddToCart={() => dispatch(addToCart(itemData.item))}
-        />
+        >
+          <Button
+            color={Colors.primary}
+            title="View Details"
+            onPress={() =>
+              selectItemHandler(itemData.item.id, itemData.item.title)
+            }
+          />
+          <Button
+            color={Colors.primary}
+            title="To Cart"
+            onPress={() => {
+              dispatch(addToCart(itemData.item));
+            }}
+          />
+        </ProductItem>
       )}
     />
   );
@@ -39,30 +58,29 @@ ProductsOverviewScreen.navigationOptions = (navData) => {
     headerLeft: () => {
       return (
         <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-          <Item 
+          <Item
             title="menu"
             iconName={Platform.OS === "android" ? "md-menu" : "ios-menu"}
             onPress={() => {
               navData.navigation.toggleDrawer();
             }}
-
           />
         </HeaderButtons>
-      )
+      );
     },
     headerRight: () => {
-        return (
-          <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-            <Item
-              title="Cart"
-              iconName={Platform.OS === 'android' ? "md-cart" : "ios-cart"}
-              onPress={() => {  
-                navData.navigation.navigate({routeName: 'Cart'});
-              }}
-            />
-          </HeaderButtons>
-        );
-      },  
+      return (
+        <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+          <Item
+            title="Cart"
+            iconName={Platform.OS === "android" ? "md-cart" : "ios-cart"}
+            onPress={() => {
+              navData.navigation.navigate({ routeName: "Cart" });
+            }}
+          />
+        </HeaderButtons>
+      );
+    },
   };
 };
 

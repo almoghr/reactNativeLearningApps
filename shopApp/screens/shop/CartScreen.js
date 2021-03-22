@@ -5,10 +5,10 @@ import Colors from "../../constants/colors";
 import CartItem from "../../components/shop/CartItem";
 import { removeFromCart } from "../../store/products/actions/cart";
 import { addOrder } from "../../store/products/actions/orders";
+import Card from '../../components/UI/Card'
 
 
-
-const CartScreen = (props) => {
+const CartScreen = () => {
   const dispatch = useDispatch();
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItems = useSelector((state) => {
@@ -28,10 +28,10 @@ const CartScreen = (props) => {
   });
   return (
     <View style={styles.screen}>
-      <View style={styles.summary}>
+      <Card style={styles.summary}>
         <Text style={styles.summaryText}>
           Total:
-          <Text style={styles.amount}>${cartTotalAmount.toFixed(2)}</Text>
+          <Text style={styles.amount}>${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}</Text>
         </Text>
         <Button
           disabled={cartItems.length === 0}
@@ -41,7 +41,7 @@ const CartScreen = (props) => {
             dispatch(addOrder(cartItems, cartTotalAmount));
           }}
         />
-      </View>
+      </Card>
       <View>
         <Text>CART ITEMS</Text>
       </View>
@@ -81,13 +81,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 20,
     padding: 10,
-    shadowColor: "black",
-    shadowOpacity: 0.6,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 15,
-    backgroundColor: "white",
   },
   summaryText: {
     fontFamily: "open-sans-bold",

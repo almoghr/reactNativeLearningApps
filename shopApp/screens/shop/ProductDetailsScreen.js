@@ -4,11 +4,8 @@ import {
   Text,
   View,
   ScrollView,
-  Platform,
-  TouchableOpacity,
   Image,
   Button,
-  TouchableNativeFeedback,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Colors from "../../constants/colors";
@@ -19,7 +16,7 @@ import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
 
 
 const ProductDetailsScreen = (props) => {
-    const dispatch = useDispatch 
+    const dispatch = useDispatch()
   const productId = props.navigation.getParam("productId");
   const selectedProduct = useSelector((state) =>
     state.products.availableProducts.find((p) => p.id === productId)
@@ -47,7 +44,7 @@ ProductDetailsScreen.navigationOptions = (navData) => {
               title="Cart"
               iconName="ios-cart"
               onPress={() => {  
-                // navData.navigation.navigate({routeName: });
+                navData.navigation.navigate({routeName: 'Cart' });
               }}
             />
           </HeaderButtons>

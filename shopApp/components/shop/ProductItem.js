@@ -4,14 +4,11 @@ import {
   Text,
   View,
   Image,
-  Button,
   TouchableOpacity,
   Platform,
-  TouchableNativeFeedback,
 } from "react-native";
-import Colors from "../../constants/colors";
 
-
+import Card from '../UI/Card'
 
 
 
@@ -20,10 +17,10 @@ const ProductItem = (props) => {
     Platform.OS === "android" && Platform.version >= 21
       ? TouchableNativeDeedback
       : TouchableOpacity;
-  const { title, price, imageUrl, onViewDetail, onAddToCart } = props;
+  const { title, price, imageUrl, onSelect } = props;
   return (
-    <TouchableCmp onPress={onViewDetail} useForeground>
-      <View style={styles.product}>
+    <TouchableCmp onPress={onSelect} useForeground>
+      <Card style={styles.product}>
         <View style={styles.imageContainer}>
           <Image style={styles.image} source={{ uri: imageUrl }} />
         </View>
@@ -32,31 +29,15 @@ const ProductItem = (props) => {
           <Text style={styles.price}>${price.toFixed(2)}</Text>
         </View>
         <View style={styles.actions}>
-          <Button
-            color={Colors.primary}
-            title="View Details"
-            onPress={onViewDetail}
-          />
-          <Button
-            color={Colors.primary}
-            title="To Cart"
-            onPress={onAddToCart}
-          />
+          {props.children}
         </View>
-      </View>
+      </Card>
     </TouchableCmp>
   );
 };
 
 const styles = StyleSheet.create({
   product: {
-    shadowColor: "black",
-    shadowOpacity: 0.6,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 15,
-    backgroundColor: "white",
     height: 300,
     margin: 20,
   },
@@ -73,7 +54,7 @@ const styles = StyleSheet.create({
   },
   details: {
     alignItems: "center",
-    height: "15%",
+    height: "17%",
     padding: 10,
   },
   title: {
@@ -92,7 +73,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
 
-    height: "25%",
+    height: "23%",
   },
 });
 
