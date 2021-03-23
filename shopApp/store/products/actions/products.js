@@ -51,23 +51,30 @@ export const updateProduct = (id, title, description, imageUrl) => {
 
 export const fetchProducts = () => {
   return async (dispatch) => {
-    const response = await fetch(
-      "https://rn-shopapp-f11bd-default-rtdb.firebaseio.com/products.json"
-    );
-    const resData = await response.json();
-    const loadedProducts = [];
-    for (const key in resData) {
-      loadedProducts.push(
-        new Product(
-          key,
-          "u1",
-          resData[key].title,
-          resData[key].imageUrl,
-          resData[key].description,
-          resData[key].price
-        )
+    try {
+      const response = await fetch(
+        "https://rn-shopapp-f11bd-default-rtdb.firebaseio.com/products.jon"
       );
+      if(!response.ok){
+        throw new Error('something went wrong!')
+      }
+      const resData = await response.json();
+      const loadedProducts = [];
+      for (const key in resData) {
+        loadedProducts.push(
+          new Product(
+            key,
+            "u1",
+            resData[key].title,
+            resData[key].imageUrl,
+            resData[key].description,
+            resData[key].price
+          )
+        );
+      }
+      dispatch({ type: SET_PRODUCTS, products: loadedProducts });
+    } catch (err) {
+      console.log(err)
     }
-    dispatch({ type: SET_PRODUCTS, products: loadedProducts });
   };
 };

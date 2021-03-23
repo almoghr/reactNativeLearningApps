@@ -8,8 +8,8 @@ import {
 import Product from "../../../models/product";
 
 const initialState = {
-  availableProducts: PRODUCTS, // all the products which i never created
-  userProducts: PRODUCTS.filter((product) => product.ownerId === "u1"), // all the products which i created
+  availableProducts: [], // all the products which i never created
+  userProducts: [], // all the products which i created
 };
 
 export default (state = initialState, action) => {
