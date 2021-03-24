@@ -7,7 +7,22 @@ import {
 import Product from "../../../models/product";
 
 export const deleteProduct = (productId) => {
-  return { type: DELETE_PRODUCT, productId: productId };
+  return async (dispatch) => {
+    const response = await fetch(
+      `https://rn-shopapp-f11bd-default-rtdb.firebaseio.com/products/${productId}.json`,
+      {
+        method: "DELETE",
+      }
+    )
+    if (!response.ok) {
+      throw new Error("something went wrong!");
+    }
+
+    dispatch({
+      type: DELETE_PRODUCT,
+      productId: productId,
+    });
+  };
 };
 
 export const createProduct = (title, description, imageUrl, price) => {
@@ -23,7 +38,6 @@ export const createProduct = (title, description, imageUrl, price) => {
       }
     );
     const resData = await response.json();
-    console.log(resData);
     dispatch({
       type: CREATE_PRODUCT,
       productData: {
@@ -38,14 +52,30 @@ export const createProduct = (title, description, imageUrl, price) => {
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {
-  return {
-    type: UPDATE_PRODUCT,
-    productId: id,
-    productData: {
-      title,
-      description,
-      imageUrl,
-    },
+  return async (dispatch) => {
+    const response = await fetch(
+      `https://rn-shopapp-f11bd-default-rtdb.firebaseio.com/products/${id}.json`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, description, imageUrl }),
+      }
+    );
+    if (!response.ok) {
+      throw new Error("something went wrong!");
+    }
+
+    dispatch({
+      type: UPDATE_PRODUCT,
+      productId: id,
+      productData: {
+        title,
+        description,
+        imageUrl,
+      },
+    });
   };
 };
 
@@ -53,10 +83,10 @@ export const fetchProducts = () => {
   return async (dispatch) => {
     try {
       const response = await fetch(
-        "https://rn-shopapp-f11bd-default-rtdb.firebaseio.com/products.jon"
+        "https://rn-shopapp-f11bd-default-rtdb.firebaseio.com/products.json"
       );
-      if(!response.ok){
-        throw new Error('something went wrong!')
+      if (!response.ok) {
+        throw new Error("something went wrong!");
       }
       const resData = await response.json();
       const loadedProducts = [];
@@ -74,7 +104,7 @@ export const fetchProducts = () => {
       }
       dispatch({ type: SET_PRODUCTS, products: loadedProducts });
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 };
