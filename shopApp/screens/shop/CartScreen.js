@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, Text, View, FlatList, Button } from "react-native";
+import React, {useState} from "react";
+import { StyleSheet, Text, View, FlatList, Button, ActivityIndicator } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Colors from "../../constants/colors";
 import CartItem from "../../components/shop/CartItem";
@@ -9,6 +9,7 @@ import Card from '../../components/UI/Card'
 
 
 const CartScreen = () => {
+  const [ isLoading, setIsLoading ] = useState(false)
   const dispatch = useDispatch();
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
   const cartItems = useSelector((state) => {
@@ -26,6 +27,14 @@ const CartScreen = () => {
       a.productId > b.productId ? 1 : -1
     );
   });
+
+
+  const sendOrderHandler = async () => {
+    setIsLoading(true); 
+    await dispatch(addOrder(cartItems, cartTotalAmount))
+    setIsLoading(false);
+  }
+
   return (
     <View style={styles.screen}>
       <Card style={styles.summary}>
@@ -33,14 +42,15 @@ const CartScreen = () => {
           Total:
           <Text style={styles.amount}>${Math.round(cartTotalAmount.toFixed(2) * 100) / 100}</Text>
         </Text>
+        {isLoading ? <ActivityIndicator size='small' color={Colors.primary}/> :
+        
         <Button
           disabled={cartItems.length === 0}
           color={Colors.secondary}
           title="Order Now"
-          onPress={() => {
-            dispatch(addOrder(cartItems, cartTotalAmount));
-          }}
+          onPress={sendOrderHandler}
         />
+      }
       </Card>
       <View>
         <Text>CART ITEMS</Text>

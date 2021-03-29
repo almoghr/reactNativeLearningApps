@@ -7,6 +7,8 @@ import {
   Alert,
   KeyboardAvoidingView,
   ActivityIndicator,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
@@ -16,7 +18,7 @@ import {
   updateProduct,
 } from "../../store/products/actions/products";
 import Input from "../../components/UI/Input";
-import Colors from '../../constants/colors'
+import Colors from "../../constants/colors";
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
 const formReducer = (state, action) => {
@@ -43,8 +45,8 @@ const formReducer = (state, action) => {
 };
 
 const EditProductScreen = (props) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState()
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
   const prodId = props.navigation.getParam("productId");
 
   const dispatch = useDispatch();
@@ -68,19 +70,19 @@ const EditProductScreen = (props) => {
     formIsValid: editedProduct ? true : false,
   });
 
-  const submitHandler = useCallback( async () => {
+  const submitHandler = useCallback(async () => {
     if (!formState.formIsValid) {
       Alert.alert("Wrong input", "Please check the errors in the form", [
         { text: "Okay" },
       ]);
       return;
     }
-    setError(null)
-    setIsLoading(true)
-    try{
+    setError(null);
+    setIsLoading(true);
+    try {
       editedProduct
-      ? await dispatch(
-        updateProduct(
+        ? await dispatch(
+            updateProduct(
               prodId,
               formState.inputValues.title,
               formState.inputValues.description,
@@ -95,12 +97,11 @@ const EditProductScreen = (props) => {
               +formState.inputValues.price
             )
           );
-          props.navigation.goBack();
-
-    } catch (err){
-      setError(err.message)
+      props.navigation.goBack();
+    } catch (err) {
+      setError(err.message);
     }
-        setIsLoading(false)
+    setIsLoading(false);
   }, [dispatch, prodId, formState]);
 
   const inputChangeHandler = useCallback(
@@ -119,73 +120,83 @@ const EditProductScreen = (props) => {
     props.navigation.setParams({ submit: submitHandler });
   }, [submitHandler]);
 
-useEffect(() => {
-  if(error){
-    Alert.alert('An error occured', error, [{ text: 'Okay'}])
-  }
-}, [])
-  if(isLoading){
-    return <View style={styles.centered}><ActivityIndicator size='large' color={Colors.primary}/></View>
+  useEffect(() => {
+    if (error) {
+      Alert.alert("An error occured", error, [{ text: "Okay" }]);
+    }
+  }, []);
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
   }
 
   return (
-      <KeyboardAvoidingView behavior="padding" style={{flex: 1}} keyboardVerticalOffset={1}>
-    <ScrollView>
-        <View style={styles.form}>
-          <Input
-            id="title"
-            label="title"
-            errorText="please enter a valid title!"
-            keyboardType="default"
-            autoCorrect
-            autoCapitalize="sentences"
-            returnKeyType="next"
-            onInputChange={inputChangeHandler}
-            initialValue={editedProduct ? editedProduct.title : ""}
-            initiallyValid={!!editedProduct}
-            required
-          />
-          <Input
-            id="imageUrl"
-            label="image Url"
-            errorText="please enter a valid imageUrl!"
-            keyboardType="default"
-            onInputChange={inputChangeHandler}
-            returnKeyType="next"
-            initialValue={editedProduct ? editedProduct.imageUrl : ""}
-            initiallyValid={!!editedProduct}
-            required
-          />
-          {editedProduct ? null : (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={1}
+      >
+        <ScrollView>
+          <View style={styles.form}>
             <Input
-              id="price"
-              label="price"
-              errorText="please enter a valid price!"
-              onInputChange={inputChangeHandler}
-              keyboardType="decimal-pad"
+              id="title"
+              label="title"
+              errorText="please enter a valid title!"
+              keyboardType="default"
+              autoCorrect
+              autoCapitalize="sentences"
               returnKeyType="next"
+              onInputChange={inputChangeHandler}
+              initialValue={editedProduct ? editedProduct.title : ""}
+              initiallyValid={!!editedProduct}
               required
-              min={0.1}
             />
-          )}
-          <Input
-            id="description"
-            label="description"
-            errorText="please enter a valid description!"
-            onInputChange={inputChangeHandler}
-            keyboardType="default"
-            autoCorrect
-            autoCapitalize="sentences"
-            multiline
-            numberOfLines={3}
-            initialValue={editedProduct ? editedProduct.description : ""}
-            initiallyValid={!!editedProduct}
-            required
-            minLength={5}
-          />
-        </View>
-    </ScrollView>
+            <Input
+              id="imageUrl"
+              label="image Url"
+              errorText="please enter a valid imageUrl!"
+              keyboardType="default"
+              onInputChange={inputChangeHandler}
+              returnKeyType="next"
+              initialValue={editedProduct ? editedProduct.imageUrl : ""}
+              initiallyValid={!!editedProduct}
+              required
+            />
+            {editedProduct ? null : (
+              <Input
+                id="price"
+                label="price"
+                errorText="please enter a valid price!"
+                onInputChange={inputChangeHandler}
+                keyboardType="decimal-pad"
+                returnKeyType="next"
+                required
+                min={0.1}
+              />
+            )}
+            <Input
+              id="description"
+              label="description"
+              errorText="please enter a valid description!"
+              onInputChange={inputChangeHandler}
+              keyboardType="default"
+              autoCorrect
+              autoCapitalize="sentences"
+              multiline
+              numberOfLines={3}
+              initialValue={editedProduct ? editedProduct.description : ""}
+              initiallyValid={!!editedProduct}
+              required
+              minLength={5}
+            />
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -228,11 +239,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
   },
-  centered:{
+  centered: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
 
 export default EditProductScreen;

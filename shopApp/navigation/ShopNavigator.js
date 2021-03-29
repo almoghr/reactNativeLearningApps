@@ -1,5 +1,5 @@
-import React from 'react'
-import { createAppContainer } from "react-navigation";
+import React from "react";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import CartScreen from "../screens/shop/CartScreen";
@@ -7,12 +7,13 @@ import OrdersScreen from "../screens/shop/OrdersScreen";
 import ProductDetailsScreen from "../screens/shop/ProductDetailsScreen";
 import ProductsOverviewScreen from "../screens/shop/ProductsOverviewScreen";
 import UserProductScreen from "../screens/user/UserProductScreen";
-import EditProductScreen from '../screens/user/EditProductScreen'
+import EditProductScreen from "../screens/user/EditProductScreen";
+import AuthScreen from "../screens/user/AuthScreen";
 import Colors from "../constants/colors";
 import { Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const defaulNavOptions = {
+const defaultNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === "android" ? Colors.primary : "",
   },
@@ -46,7 +47,7 @@ const ProductsNavigator = createStackNavigator(
         />
       ),
     },
-    defaultNavigationOptions: defaulNavOptions,
+    defaultNavigationOptions: defaultNavOptions,
   }
 );
 
@@ -56,8 +57,8 @@ const AdminNavigator = createStackNavigator(
       screen: UserProductScreen,
     },
     EditProduct: {
-      screen: EditProductScreen
-    }
+      screen: EditProductScreen,
+    },
   },
   {
     navigationOptions: {
@@ -69,7 +70,7 @@ const AdminNavigator = createStackNavigator(
         />
       ),
     },
-    defaultNavigationOptions: defaulNavOptions,
+    defaultNavigationOptions: defaultNavOptions,
   }
 );
 
@@ -89,10 +90,9 @@ const OrdersNavigator = createStackNavigator(
         />
       ),
     },
-    defaultNavigationOptions: defaulNavOptions,
+    defaultNavigationOptions: defaultNavOptions,
   }
 );
-
 
 const shopNavigator = createDrawerNavigator(
   {
@@ -106,4 +106,18 @@ const shopNavigator = createDrawerNavigator(
     },
   }
 );
-export default createAppContainer(shopNavigator);
+
+const AuthNavigator = createStackNavigator(
+  {
+    Auth: {
+      screen: AuthScreen,
+    },
+  },
+  { defaultNavigationOptions: defaultNavOptions }
+);
+
+const mainNavigator = createSwitchNavigator({
+  Auth: AuthNavigator,
+  Shop: shopNavigator,
+});
+export default createAppContainer(mainNavigator);

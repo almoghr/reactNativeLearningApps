@@ -53,6 +53,7 @@ export const createProduct = (title, description, imageUrl, price) => {
 
 export const updateProduct = (id, title, description, imageUrl) => {
   return async (dispatch) => {
+    console.log(id)
     const response = await fetch(
       `https://rn-shopapp-f11bd-default-rtdb.firebaseio.com/products/${id}.json`,
       {
