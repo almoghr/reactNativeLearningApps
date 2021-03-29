@@ -15,14 +15,14 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_PRODUCTS:
-      return{
+      return {
         availableProducts: action.products,
-        userProducts: action.products.filter((product) => product.ownerId === "u1")
-      }
+        userProducts: action.userProducts,
+      };
     case CREATE_PRODUCT:
       const newProduct = new Product(
         action.productData.id,
-        "u1",
+        action.productData.ownerId,
         action.productData.title,
         action.productData.imageUrl,
         action.productData.description,
@@ -51,12 +51,12 @@ export default (state = initialState, action) => {
       const availableProductIndex = state.availableProducts.findIndex(
         (product) => product.id === action.productId
       );
-      const updatedAvailableProducts = [...state.availableProducts]
-      updatedAvailableProducts[availableProductIndex] = updatedProduct
+      const updatedAvailableProducts = [...state.availableProducts];
+      updatedAvailableProducts[availableProductIndex] = updatedProduct;
       return {
         ...state,
         availableProducts: updatedAvailableProducts,
-        userProducts: updatedUserProducts
+        userProducts: updatedUserProducts,
       };
     case DELETE_PRODUCT:
       return {

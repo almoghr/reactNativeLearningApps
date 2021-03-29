@@ -5,6 +5,8 @@ import {
   Platform,
   Button,
   Alert,
+  View,
+  Text,
 } from "react-native";
 import ProductItem from "../../components/shop/ProductItem";
 import { useSelector, useDispatch } from "react-redux";
@@ -26,9 +28,23 @@ const UserProductScreen = (props) => {
   const deleteHandler = (id) => {
     Alert.alert("Are you sure?", "Do you really want to delete this item?", [
       { text: "No", style: "default" },
-      { text: "Yes", style: "destructive", onPress: () => {dispatch(deleteProduct(id))} },
+      {
+        text: "Yes",
+        style: "destructive",
+        onPress: () => {
+          dispatch(deleteProduct(id));
+        },
+      },
     ]);
   };
+
+  if (userProducts.length === 0) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>No products found, maybe start creating some</Text>
+      </View>
+    );
+  }
   return (
     <FlatList
       data={userProducts}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux'
 import store from './store/store'
-import ShopNavigator from './navigation/ShopNavigator'
+import NavigationContainer from './navigation/NavigationContainer'
 import AppLoading from "expo-app-loading";
 import {useFonts } from 'expo-font'
 import { enableScreens } from "react-native-screens";
@@ -21,7 +21,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <ShopNavigator />
+      <NavigationContainer />
     </Provider>
   );
 }

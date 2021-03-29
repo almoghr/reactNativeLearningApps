@@ -1,34 +1,24 @@
-import React, {useState, useEffect, useCallback} from "react";
-import { FlatList, Platform, View, ActivityIndicator, StyleSheet } from "react-native";
+import React, {useState, useEffect} from "react";
+import { FlatList, Platform, View, ActivityIndicator, StyleSheet, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../../components/UI/CustomHeaderButton";
 import OrderItem from "../../components/shop/OrderItem";
 import { fetchOrders } from '../../store/products/actions/orders'
 import Colors from '../../constants/colors'
+
+
 const OrdersScreen = props => {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
   const orders = useSelector((state) => state.orders.orders);
 
-  const loadOrders = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      dispatch(fetchOrders());
-    } catch (err) {
-      setError(err.message);
-    }
-    setIsLoading(false);
-  }, [dispatch, setIsLoading]);
-
-
   useEffect(() => {
-    const willFocusSub = props.navigation.addListener('willFocus', loadOrders)
-
-    return () => {
-      willFocusSub.remove()
-    }
-  }, [loadOrders])
+    setIsLoading(true);
+    dispatch(fetchOrders()).then(() => {
+      setIsLoading(false);
+    });
+  }, [dispatch]);
 
   if (isLoading) {
     return (
@@ -37,6 +27,14 @@ const OrdersScreen = props => {
       </View>
     );
   }
+  if (orders.length === 0) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>No orders found, maybe start ordering some products </Text>
+      </View>
+    );
+  }
+
   return (
     <FlatList
       data={orders}

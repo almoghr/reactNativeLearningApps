@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback } from "react";
+import React, { useState, useEffect, useReducer, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
   StyleSheet,
@@ -7,12 +7,14 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Button,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Input from "../../components/UI/Input";
 import Card from "../../components/UI/Card";
 import Colors from "../../constants/colors";
-import { signup } from "../../store/users/actions/auth";
+import { signup, login } from "../../store/users/actions/auth";
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
 const formReducer = (state, action) => {
@@ -38,7 +40,10 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const AuthScreen = () => {
+const AuthScreen = props => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState()
+  const [isSignUp, setIsSignUp] = useState(false);
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: "",
@@ -51,15 +56,41 @@ const AuthScreen = () => {
     formIsValid: false,
   });
   const dispatch = useDispatch();
-  const signUpHandler = () => {
-      try{
-          dispatch(
-            signup(formState.inputValues.email, formState.inputValues.password)
-          );
-      } catch(err){
-          console.log(err.message)
+  const authHandler = async () => {
+    setError(null)
+    if (isSignUp) {
+      try {
+        setIsLoading(true);
+        await dispatch(
+          signup(formState.inputValues.email, formState.inputValues.password)
+        );
+        props.navigation.navigate({routeName: 'Shop'})
+
+      } catch (err) {
+        console.log(err)
+        setIsLoading(false);
+        setError(err.message);
       }
+    } else {
+      try {
+        
+        setIsLoading(true);
+        await dispatch(
+          login(formState.inputValues.email, formState.inputValues.password)
+        );
+        props.navigation.navigate({routeName: 'Shop'})
+      } catch (err) {
+        setIsLoading(false);
+        setError(err.message);
+      }
+    }
   };
+
+useEffect(() => {
+  if(error){
+    Alert.alert('An Error Occured!', error, [{ text: 'Okay'}])
+  }
+}, [error])
 
   const inputChangeHandler = useCallback(
     (formInputType, inputValue, inputValidity) => {
@@ -106,17 +137,21 @@ const AuthScreen = () => {
               initialValue=""
             />
             <View style={styles.buttonContainer}>
-              <Button
-                title="Signup"
-                color={Colors.primary}
-                onPress={() => signUpHandler()}
-              />
+              {isLoading ? (
+                <ActivityIndicator size="small" color={Colors.primary}/>
+              ) : (
+                <Button
+                  title={!isSignUp ? "Login" : "Signup"}
+                  color={Colors.primary}
+                  onPress={authHandler}
+                />
+              )}
             </View>
             <View style={styles.buttonContainer}>
               <Button
-                title="Switch to Login"
+                title={isSignUp ? "Switch to Login" : "switch to Sign Up"}
                 color={Colors.secondary}
-                onPress={() => {}}
+                onPress={() => setIsSignUp(!isSignUp)}
               />
             </View>
           </ScrollView>
