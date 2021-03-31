@@ -1,12 +1,37 @@
-import React from "react";
-import { StyleSheet, Text, View, Platform, FlatList } from "react-native";
+import React, { useEffect } from "react";
+import { StyleSheet, Platform, FlatList } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import CustomHeaderButton from "../components/CustomHeaderButton";
-import { useSelector } from 'react-redux'
-const PlacesListScreen = () => {
-  const places = useSelector((state) => state.places.places)
+import { useSelector, useDispatch } from "react-redux";
+import PlaceItem from "../components/PlaceItem";
+import { loadPlaces } from "../store/places-actions";
+
+const PlacesListScreen = (props) => {
+  const dispatch = useDispatch();
+  const places = useSelector((state) => state.places.places);
+  useEffect(() => {
+    dispatch(loadPlaces());
+  }, [dispatch]);
   return (
-    <FlatList data={places} renderItem={(itemData) => <PlaceItem onSelect={() => {props.navigation.navigate({routeName: 'PlaceDetails'})}} image={null} address={null} title={itemData.item.title}/> }/>
+    <FlatList
+      data={places}
+      renderItem={(itemData) => (
+        <PlaceItem
+          onSelect={() => {
+            props.navigation.navigate({
+              routeName: "PlaceDetails",
+              params: {
+                placeTitle: itemData.item.title,
+                placeId: itemData.item.id,
+              },
+            });
+          }}
+          image={itemData.item.imageUri}
+          address={null}
+          title={itemData.item.title}
+        />
+      )}
+    />
   );
 };
 

@@ -8,27 +8,41 @@ import {
   Button,
 } from "react-native";
 import Colors from "../constants/Colors";
-import {useDispatch} from 'react-redux'
-import { addPlace } from '../store/places-actions'
+import { useDispatch } from "react-redux";
+import { addPlace } from "../store/places-actions";
+import ImgPicker from "../components/ImgPicker";
 
-const NewPlaceScreen = props => {
-    const dispatch = useDispatch()
-    const [titleValue, setTitleValue] = useState('')
+const NewPlaceScreen = (props) => {
+  const dispatch = useDispatch();
+  const [titleValue, setTitleValue] = useState("");
+  const [selectedImage, setSelectedImage] = useState()
 
-    const titleChangeHandler = text => {
-        setTitleValue(text)
-    }
+  const titleChangeHandler = (text) => {
+    setTitleValue(text);
+  };
 
-    const savePlaceHandler = (title) => {
-        dispatch(addPlace(title))
-        props.navigation.goBack()
-    }
+  const imageTakenHandler = imagePath => {
+      setSelectedImage(imagePath);
+  }
+  const savePlaceHandler = () => {
+    dispatch(addPlace(titleValue, selectedImage));
+    props.navigation.goBack();
+  };
   return (
     <ScrollView>
       <View style={styles.form}>
         <Text style={styles.label}>Title</Text>
-        <TextInput style={styles.textInput} onChangeText={titleChangeHandler} value={titleValue} />
-        <Button title="Save Place" color={Colors.primary} onPress={() => savePlaceHandler(titleValue)} />
+        <TextInput
+          style={styles.textInput}
+          onChangeText={titleChangeHandler}
+          value={titleValue}
+        />
+        <ImgPicker onImageTaken={imageTakenHandler}/>
+        <Button
+          title="Save Place"
+          color={Colors.primary}
+          onPress={savePlaceHandler}
+        />
       </View>
     </ScrollView>
   );

@@ -10,8 +10,9 @@ const PlaceDetailsScreen = () => {
 }
 
 PlaceDetailsScreen.navigationOptions = (navData) => {
+    const title = navData.navigation.getParam("placeTitle")
     return {
-        headerTitle: 'place'
+        headerTitle: title
     }
 }
 
