@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -18,7 +18,11 @@ const NewPlaceScreen = (props) => {
   const dispatch = useDispatch();
   const [titleValue, setTitleValue] = useState("");
   const [selectedImage, setSelectedImage] = useState()
+  const [selectedLocation, setSelectedLocation] = useState();
 
+  const locationPickedHandler = useCallback((location) => {
+    setSelectedLocation(location)
+  }, [setSelectedLocation])
   const titleChangeHandler = (text) => {
     setTitleValue(text);
   };
@@ -27,7 +31,7 @@ const NewPlaceScreen = (props) => {
       setSelectedImage(imagePath);
   }
   const savePlaceHandler = () => {
-    dispatch(addPlace(titleValue, selectedImage));
+    dispatch(addPlace(titleValue, selectedImage,selectedLocation));
     props.navigation.goBack();
   };
   return (
@@ -40,7 +44,7 @@ const NewPlaceScreen = (props) => {
           value={titleValue}
         />
         <ImgPicker onImageTaken={imageTakenHandler}/>
-        <LocationPicker />
+        <LocationPicker navigation={props.navigation} onLocationPicked={locationPickedHandler}/>
         <Button
           title="Save Place"
           color={Colors.primary}

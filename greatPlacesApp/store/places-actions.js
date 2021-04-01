@@ -2,18 +2,17 @@ import * as FileSystem from "expo-file-system";
 import { ADD_PLACE, SET_PLACES } from "./places-constants";
 import { insertPlace, fetchPlaces } from "../helpers/db";
 
-export const addPlace = (title, image) => {
+export const addPlace = (title, image, location) => {
   return async (dispatch) => {
     const fileName = image.split("/").pop();
     const newPath = FileSystem.documentDirectory + fileName;
-    console.log(newPath)
     try {
       await FileSystem.moveAsync({
         from: image,
         to: newPath,
       });
-      const dbResult = await insertPlace(title, newPath, "somehting", 15.6, 25.6);
-      dispatch({ type: ADD_PLACE, placeData: { id: dbResult.insertId, title: title, image: newPath } });
+      const dbResult = await insertPlace(title, newPath, "somehting", location.lat, location.lng);
+      dispatch({ type: ADD_PLACE, placeData: { id: dbResult.insertId, title: title, image: newPath  } });
 
     } catch (err) {
       console.log(err.message);
