@@ -11,7 +11,6 @@ init().then(() => {
   console.log(err)
 });
 enableScreens();
-console.log(store.getState())
 export default function App() {
   return (
     <Provider store={store}>

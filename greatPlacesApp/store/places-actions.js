@@ -6,13 +6,14 @@ export const addPlace = (title, image) => {
   return async (dispatch) => {
     const fileName = image.split("/").pop();
     const newPath = FileSystem.documentDirectory + fileName;
+    console.log(newPath)
     try {
       await FileSystem.moveAsync({
         from: image,
         to: newPath,
       });
-      const dbResult = await insertPlace(title, image, "somehting", 15.6, 25.6);
-      dispatch({ type: ADD_PLACE, placeData: { id: dbResult.insertId, title: title, image: image } });
+      const dbResult = await insertPlace(title, newPath, "somehting", 15.6, 25.6);
+      dispatch({ type: ADD_PLACE, placeData: { id: dbResult.insertId, title: title, image: newPath } });
 
     } catch (err) {
       console.log(err.message);

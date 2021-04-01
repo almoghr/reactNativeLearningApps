@@ -23,14 +23,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     flexDirection: 'row',
     alignItems: 'center'
+    
   },
   image: {
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#ccc',
+    backgroundColor: 'white',
     borderColor: Colors.primary,
-    borderWidth: 1
+    borderWidth: 1,
   },
   infoContainer: {
     marginLeft: 25,

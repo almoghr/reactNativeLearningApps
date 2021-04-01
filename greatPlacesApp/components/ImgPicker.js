@@ -6,7 +6,7 @@ import * as Permissions from "expo-permissions";
 
 const ImgPicker = (props) => {
   const [imageUri, setImageUri] = useState("");
-  const verifyPermissons = async () => {
+  const verifyPermissions = async () => {
     const result = await Permissions.askAsync(
       Permissions.CAMERA,
       Permissions.MEDIA_LIBRARY
@@ -23,7 +23,7 @@ const ImgPicker = (props) => {
   };
 
   const takeImageHandler = async () => {
-    const hasPermission = await verifyPermissons();
+    const hasPermission = await verifyPermissions();
     if (!hasPermission) {
       return;
     }
@@ -31,7 +31,7 @@ const ImgPicker = (props) => {
     const image = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [16, 9],
-      quality: 0.5,
+      quality: 0.2,
     });
     setImageUri(image.uri);
     props.onImageTaken(image.uri)
